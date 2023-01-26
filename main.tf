@@ -25,3 +25,12 @@ resource "digitalocean_droplet" "vpn" {
     data.digitalocean_ssh_key.ssh_key.id
   ]
 }
+
+# Create an ansible inventory file
+resource "local_file" "inventory" {
+  content = templatefile("${path.module}/templates/inventory.tftpl", {
+    ip = digitalocean_droplet.vpn.ipv4_address
+    user = "root"
+  })
+  filename = "${path.module}/inventory.ini"
+}

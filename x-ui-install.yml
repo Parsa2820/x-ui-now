@@ -1,0 +1,16 @@
+---
+- name: Install x-ui
+  hosts: all
+  become: yes
+  tasks:
+    - name: Update everything
+      apt:
+        update_cache: yes
+        upgrade: dist
+    - name: Install x-ui with script
+      shell: yes n | bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)
+      args:
+        executable: /bin/bash
+    - name: Print x-ui info
+      debug:
+        msg: "x-ui installed, please visit http://{{ ansible_default_ipv4.address }}:54321 to manage your x-ui."
